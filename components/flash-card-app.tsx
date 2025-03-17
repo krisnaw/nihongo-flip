@@ -3,25 +3,23 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import FlashCard from "@/components/flash-card"
 import { Shuffle, RotateCcw, CheckCircle2 } from "lucide-react"
+import FlashCard from "@/components/flash-card"
 
-// Sample flash card data
-const initialCards = [
-  { id: 1, japanese: "こんにちは", romaji: "Konnichiwa", english: "Hello", known: false },
-  { id: 2, japanese: "ありがとう", romaji: "Arigatou", english: "Thank you", known: false },
-  { id: 3, japanese: "さようなら", romaji: "Sayounara", english: "Goodbye", known: false },
-  { id: 4, japanese: "おはよう", romaji: "Ohayou", english: "Good morning", known: false },
-  { id: 5, japanese: "すみません", romaji: "Sumimasen", english: "Excuse me / Sorry", known: false },
-  { id: 6, japanese: "はい", romaji: "Hai", english: "Yes", known: false },
-  { id: 7, japanese: "いいえ", romaji: "Iie", english: "No", known: false },
-  { id: 8, japanese: "お願いします", romaji: "Onegaishimasu", english: "Please", known: false },
-  { id: 9, japanese: "わかりました", romaji: "Wakarimashita", english: "I understand", known: false },
-  { id: 10, japanese: "水", romaji: "Mizu", english: "Water", known: false },
-]
+interface Card {
+  id: number
+  japanese: string
+  romaji: string
+  english: string
+  known: boolean
+}
 
-export default function FlashCardApp() {
-  const [cards, setCards] = useState(initialCards)
+interface FlashCardAppProps {
+  initialCards: Card[]
+}
+
+export default function FlashCardApp({ initialCards }: FlashCardAppProps) {
+  const [cards, setCards] = useState<Card[]>(initialCards)
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [progress, setProgress] = useState(0)
   const [remainingCards, setRemainingCards] = useState(initialCards.length)
@@ -52,7 +50,7 @@ export default function FlashCardApp() {
     setCurrentCardIndex(prevIndex)
   }
 
-  const findNextUnknownCard = (startIndex) => {
+  const findNextUnknownCard = (startIndex: number) => {
     // If all cards are known, just go to the next card
     if (remainingCards === 0) {
       return (startIndex + 1) % cards.length
@@ -78,7 +76,7 @@ export default function FlashCardApp() {
   }
 
   const resetCards = () => {
-    setCards(initialCards.map((card) => ({ ...card, known: false })))
+    setCards(cards.map((card) => ({ ...card, known: false })))
     setCurrentCardIndex(0)
   }
 
@@ -91,13 +89,13 @@ export default function FlashCardApp() {
   return (
     <div className="w-full max-w-3xl flex flex-col items-center gap-6">
       <div className="w-full flex items-center justify-between mb-2">
-        <div className="text-sm text-muted-foreground">Progress: {Math.round(progress)}%</div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-slate-500">Progress: {Math.round(progress)}%</div>
+        <div className="text-sm text-slate-500">
           Cards remaining: {remainingCards} / {cards.length}
         </div>
       </div>
 
-      <Progress value={progress} className="w-full h-2" />
+      <Progress value={progress} className="w-full h-2 bg-slate-200" />
 
       <div className="w-full">
         {cards.length > 0 && (
@@ -111,17 +109,29 @@ export default function FlashCardApp() {
       </div>
 
       <div className="flex flex-wrap gap-3 justify-center mt-4">
-        <Button variant="outline" onClick={shuffleCards} className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          onClick={shuffleCards}
+          className="flex items-center gap-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+        >
           <Shuffle className="h-4 w-4" />
           Shuffle
         </Button>
 
-        <Button variant="outline" onClick={resetCards} className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          onClick={resetCards}
+          className="flex items-center gap-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+        >
           <RotateCcw className="h-4 w-4" />
           Reset
         </Button>
 
-        <Button onClick={markAsKnown} className="flex items-center gap-2" disabled={cards[currentCardIndex]?.known}>
+        <Button
+          onClick={markAsKnown}
+          className="flex items-center gap-2 bg-indigo-700 hover:bg-indigo-800 text-white"
+          disabled={cards[currentCardIndex]?.known}
+        >
           <CheckCircle2 className="h-4 w-4" />
           Mark as Known
         </Button>

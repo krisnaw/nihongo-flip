@@ -18,7 +18,7 @@ interface FlashCardProps {
   onKnown: () => void
 }
 
-export default function FlashCard({ card, onNext, onPrev, onKnown }: FlashCardProps) {
+export default function FlashCard({ card, onNext, onPrev}: FlashCardProps) {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const handleFlip = () => {
@@ -50,12 +50,14 @@ export default function FlashCard({ card, onNext, onPrev, onKnown }: FlashCardPr
         >
           {/* Front of card (Japanese) */}
           <Card
-            className={`w-full h-64 md:h-80 cursor-pointer ${isFlipped ? "invisible absolute" : "visible"}`}
+            className={`w-full h-64 md:h-80 cursor-pointer ${
+              isFlipped ? "invisible absolute" : "visible"
+            } bg-gradient-to-br from-white to-indigo-50 border-indigo-100 shadow-md`}
             onClick={handleFlip}
           >
             <CardContent className="flex flex-col items-center justify-center h-full p-6">
-              <div className="text-4xl md:text-6xl font-bold mb-4">{card.japanese}</div>
-              <div className="text-xl md:text-2xl text-muted-foreground">{card.romaji}</div>
+              <div className="text-4xl md:text-6xl font-bold mb-4 text-indigo-900">{card.japanese}</div>
+              <div className="text-xl md:text-2xl text-indigo-600">{card.romaji}</div>
 
               {card.known && (
                 <div className="absolute top-4 right-4 bg-green-100 text-green-800 px-2 py-1 rounded-md text-xs">
@@ -63,13 +65,15 @@ export default function FlashCard({ card, onNext, onPrev, onKnown }: FlashCardPr
                 </div>
               )}
 
-              <div className="absolute bottom-4 text-sm text-muted-foreground">Click to flip</div>
+              <div className="absolute bottom-4 text-sm text-indigo-400">Click to flip</div>
             </CardContent>
           </Card>
 
           {/* Back of card (English) */}
           <Card
-            className={`w-full h-64 md:h-80 cursor-pointer absolute top-0 ${isFlipped ? "visible" : "invisible"}`}
+            className={`w-full h-64 md:h-80 cursor-pointer absolute top-0 ${
+              isFlipped ? "visible" : "invisible"
+            } bg-gradient-to-br from-white to-pink-50 border-pink-100 shadow-md`}
             onClick={handleFlip}
             style={{
               transform: "rotateY(180deg)",
@@ -77,7 +81,7 @@ export default function FlashCard({ card, onNext, onPrev, onKnown }: FlashCardPr
             }}
           >
             <CardContent className="flex flex-col items-center justify-center h-full p-6">
-              <div className="text-3xl md:text-5xl font-bold">{card.english}</div>
+              <div className="text-3xl md:text-5xl font-bold text-pink-800">{card.english}</div>
 
               {card.known && (
                 <div className="absolute top-4 right-4 bg-green-100 text-green-800 px-2 py-1 rounded-md text-xs">
@@ -85,22 +89,37 @@ export default function FlashCard({ card, onNext, onPrev, onKnown }: FlashCardPr
                 </div>
               )}
 
-              <div className="absolute bottom-4 text-sm text-muted-foreground">Click to flip back</div>
+              <div className="absolute bottom-4 text-sm text-pink-400">Click to flip back</div>
             </CardContent>
           </Card>
         </div>
       </div>
 
       <div className="flex justify-between mt-4">
-        <Button variant="outline" size="icon" onClick={handlePrev}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handlePrev}
+          className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+        >
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        <Button variant="outline" size="icon" onClick={handleFlip}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleFlip}
+          className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+        >
           <RotateCw className="h-4 w-4" />
         </Button>
 
-        <Button variant="outline" size="icon" onClick={handleNext}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleNext}
+          className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+        >
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
